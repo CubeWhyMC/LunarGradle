@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.21'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.0'
+
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+group = 'org.cubewhy.gradle'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.ow2.asm:asm:9.4'
+    implementation 'org.ow2.asm:asm-commons:9.4'
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'org.cubewhy.gradle'
+            implementationClass = 'org.cubewhy.gradle.LunarPlugin'
+        }
+    }
+}
+
+
+publishing {
+    publications {
+        LauncherLib(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = "LunarCN"
+            url = "https://repo.lunarcn.top/repository/maven-snapshots/"
+            credentials {
+                username System.getenv("LUNARCN_USERNAME")
+                password System.getenv("LUNARCN_PASSWORD")
+            }
+        }
+    }
+}
