@@ -2,13 +2,13 @@ plugins {
     id 'java'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.21'
     id 'org.jetbrains.kotlin.jvm' version '1.9.0'
+    id 'com.gradle.plugin-publish' version '1.1.0'
 
     id 'java-gradle-plugin'
-    id 'maven-publish'
 }
 
 group = 'org.cubewhy.gradle'
-version = '1.0-SNAPSHOT'
+version = '1.0'
 
 repositories {
     mavenCentral()
@@ -29,35 +29,17 @@ test {
     useJUnitPlatform()
 }
 
-kotlin {
-    jvmToolchain(17)
-}
-
 gradlePlugin {
+    website = 'https://lunarclient.top'
+    vcsUrl = 'https://github.com/CubeWhyMC/LunarGradle.git'
+
     plugins {
         simplePlugin {
             id = 'org.cubewhy.gradle'
+            displayName = "LunarGradle"
+            description = "LunarClient plugin lom"
             implementationClass = 'org.cubewhy.gradle.LunarPlugin'
-        }
-    }
-}
-
-
-publishing {
-    publications {
-        LauncherLib(MavenPublication) {
-            from components.java
-        }
-    }
-
-    repositories {
-        maven {
-            name = "LunarCN"
-            url = "https://repo.lunarcn.top/repository/maven-snapshots/"
-            credentials {
-                username System.getenv("LUNARCN_USERNAME")
-                password System.getenv("LUNARCN_PASSWORD")
-            }
+            tags.set(["luanrclient", "minecraft"])
         }
     }
 }

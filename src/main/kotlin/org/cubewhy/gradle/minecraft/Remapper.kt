@@ -1,7 +1,7 @@
 package org.cubewhy.gradle.minecraft
 
-import groovyjarjarasm.asm.commons.SimpleRemapper
 import org.objectweb.asm.commons.Remapper
+import org.objectweb.asm.commons.SimpleRemapper
 import java.io.InputStream
 
 fun createRemapper(version: MinecraftVersion) =
