@@ -4,6 +4,7 @@ import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.FieldVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
+import org.objectweb.asm.Opcodes.ACC_PUBLIC
 
 class AccessWidener(cv: ClassVisitor): ClassVisitor(Opcodes.ASM9, cv) {
 
@@ -50,7 +51,8 @@ class AccessWidener(cv: ClassVisitor): ClassVisitor(Opcodes.ASM9, cv) {
         signature: String?,
         value: Any?
     ): FieldVisitor {
-        return super.visitField(makePublic(access), name, descriptor, signature, value)
+//        return super.visitField(makePublic(access), name, descriptor, signature, value)
+        return super.visitField(ACC_PUBLIC, name, descriptor, signature, value)
     }
 }
 
@@ -64,4 +66,4 @@ class AccessWidener(cv: ClassVisitor): ClassVisitor(Opcodes.ASM9, cv) {
  * @return The modified access flags with the `public` modifier.
  */
 private fun makePublic(acc: Int) =
-    acc and (Opcodes.ACC_PRIVATE + Opcodes.ACC_PROTECTED).inv() or Opcodes.ACC_PUBLIC
+    acc and (Opcodes.ACC_PRIVATE + Opcodes.ACC_PROTECTED).inv() or ACC_PUBLIC
